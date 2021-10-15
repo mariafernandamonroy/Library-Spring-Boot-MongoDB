@@ -38,15 +38,17 @@ public class ServicioRecurso {
     public void borrar(String id) {
         repositorioRecurso.deleteById(id);
     }
-    public String disponibilidadRecurso(RecursoDTO recursoDTO) {
+    public String disponibilidadRecurso(String id) {
         String mensaje = "";
+        RecursoDTO recursoDTO = obtenerPorId(id);
         if (recursoDTO.isPrestado() == false){
             recursoDTO.getFechaPrestamo();
             mensaje = ("Recurso no disponible");
         }
         return mensaje = ("Recurso disponible");
     }
-    public RecursoDTO prestarUnRecurso(RecursoDTO recursoDTO) {
+    public RecursoDTO prestarUnRecurso(String id) {
+        RecursoDTO recursoDTO = obtenerPorId(id);
         if (recursoDTO.isPrestado() == true){
             recursoDTO.getFechaPrestamo();
             new RuntimeException("Recurso no disponible");
@@ -76,8 +78,9 @@ public class ServicioRecurso {
         }
         return listaRecursos;
     }
-    public String devolverRecurso(RecursoDTO recursoDTO) {
+    public String devolverRecurso(String id) {
         String mensaje = "";
+        RecursoDTO recursoDTO = obtenerPorId(id);
         if (recursoDTO.isPrestado() == false){
             return mensaje = ("El recurso no se puede devolver porque no estaba prestado");
         }
