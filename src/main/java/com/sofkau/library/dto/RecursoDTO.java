@@ -2,12 +2,16 @@ package com.sofkau.library.dto;
 
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 public class RecursoDTO {
     @Id
     private String id;
     private String clasificación;
     private String area;
     private boolean prestado;
+    private LocalDate fechaPrestamo = null;
 
     public RecursoDTO(){
     }
@@ -42,5 +46,13 @@ public class RecursoDTO {
 
     public void setPrestado(boolean prestado) {
         this.prestado = prestado;
+    }
+
+    public LocalDate getFechaPrestamo() {
+        return fechaPrestamo;
+    }
+
+    public void setFechaPrestamo(LocalDate fechaPrestamo) {
+        this.fechaPrestamo = fechaPrestamo;
     }
 }

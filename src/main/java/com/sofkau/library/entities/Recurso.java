@@ -3,13 +3,17 @@ package com.sofkau.library.entities;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 @Document
 public class Recurso {
     @Id
     private String id;
     private String clasificación;
     private String area;
-    private boolean prestado;
+    private boolean prestado = false;
+    private LocalDate fechaPrestamo = null;
 
     public String getId() {
         return id;
@@ -41,5 +45,13 @@ public class Recurso {
 
     public void setPrestado(boolean prestado) {
         this.prestado = prestado;
+    }
+
+    public LocalDate getFechaPrestamo() {
+        return fechaPrestamo;
+    }
+
+    public void setFechaPrestamo(LocalDate fechaPrestamo) {
+        this.fechaPrestamo = fechaPrestamo;
     }
 }
