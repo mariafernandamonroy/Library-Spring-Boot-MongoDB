@@ -127,6 +127,29 @@ class ControladorRecursoTest {
     }
 
     @Test
+    @DisplayName("Test recurso no disponible")
+    void noDisponibilidadRecurso() throws Exception {
+        var datoPost = new RecursoDTO();
+        datoPost.setId("2");
+        datoPost.setTitulo("arquimedes");
+        datoPost.setClasificacion("libro");
+        datoPost.setArea("ciencia");
+        datoPost.setPrestado(true);
+        datoPost.setFechaPrestamo(null);
+
+        Mockito.when(servicioRecurso.disponibilidadRecurso(Mockito.any())).thenReturn("Recurso no disponible");
+
+        String url = "/library/recursoDisponible/arquimedes";
+
+        mockMvc.perform(get(url)
+                .contentType(MediaType.valueOf("text/plain;charset=UTF-8"))
+                .content(asJsonString(datoPost)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.valueOf("text/plain;charset=UTF-8")))
+                .andExpect(content().string("Recurso no disponible"));
+    }
+
+    @Test
     void prestarUnRecurso() throws Exception {
         var datoPost = new RecursoDTO();
         datoPost.setTitulo("arquimedes");
