@@ -17,6 +17,14 @@ public class RecursoDTO {
     public RecursoDTO(){
     }
 
+    public RecursoDTO(String id, String titulo, String clasificacion, String area, boolean prestado) {
+        this.id = id;
+        this.titulo = titulo;
+        this.clasificacion = clasificacion;
+        this.area = area;
+        this.prestado = prestado;
+    }
+
     public String getId() {
         return id;
     }

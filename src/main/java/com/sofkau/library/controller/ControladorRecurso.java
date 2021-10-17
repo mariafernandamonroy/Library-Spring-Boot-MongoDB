@@ -24,7 +24,7 @@ public class ControladorRecurso {
     }
     @PostMapping("/agregarRecurso")
     public ResponseEntity<RecursoDTO> agregarRecurso(@RequestBody RecursoDTO recursoDTO) {
-        return new ResponseEntity<>(servicioRecurso.agregarUnRecurso(recursoDTO),HttpStatus.OK);
+        return new ResponseEntity<>(servicioRecurso.agregarUnRecurso(recursoDTO),HttpStatus.CREATED);
     }
     @PutMapping("/modificarRecurso")
     public ResponseEntity<RecursoDTO> modificarRecurso(@RequestBody RecursoDTO recursoDTO) {
@@ -49,7 +49,7 @@ public class ControladorRecurso {
     }
     @PutMapping("/prestarUnRecurso/{titulo}")
     public ResponseEntity prestarUnRecurso(@PathVariable String titulo) {
-        return new ResponseEntity(servicioRecurso.prestarUnRecurso(titulo),HttpStatus.OK);
+        return new ResponseEntity(servicioRecurso.prestarUnRecurso(titulo),HttpStatus.CREATED);
     }
     @GetMapping("/recursosRecomendados/{clasificacion}/{area}")
     public ResponseEntity recursosRecomendados(@PathVariable String clasificacion, @PathVariable String area) {

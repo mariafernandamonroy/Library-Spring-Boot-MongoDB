@@ -16,6 +16,17 @@ public class Recurso {
     private boolean prestado = false;
     private LocalDate fechaPrestamo = null;
 
+    public Recurso() {
+    }
+
+    public Recurso(String id, String titulo, String clasificacion, String area, boolean prestado) {
+        this.id = id;
+        this.titulo = titulo;
+        this.clasificacion = clasificacion;
+        this.area = area;
+        this.prestado = prestado;
+    }
+
     public String getId() {
         return id;
     }

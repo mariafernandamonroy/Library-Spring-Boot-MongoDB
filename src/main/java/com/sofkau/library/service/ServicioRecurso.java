@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,8 +45,8 @@ public class ServicioRecurso {
                 .filter(recursoDto -> recursoDto.getTitulo().equalsIgnoreCase(titulo))
                 .findFirst().get();
         if (recursoDTO.isPrestado() == true){
-            recursoDTO.getFechaPrestamo();
-            return mensaje = ("Recurso no disponible");
+            LocalDate date = recursoDTO.getFechaPrestamo();
+            return mensaje = ("Recurso no disponible, prestado el día: "+ date);
         }
         return mensaje = ("Recurso disponible");
     }
