@@ -38,17 +38,24 @@ public class ServicioRecurso {
     public void borrar(String id) {
         repositorioRecurso.deleteById(id);
     }
-    public String disponibilidadRecurso(String id) {
+
+    public String disponibilidadRecurso(String titulo) {
         String mensaje = "";
-        RecursoDTO recursoDTO = obtenerPorId(id);
-        if (recursoDTO.isPrestado() == false){
+        List<RecursoDTO> listaRecursos = obtenerTodos();
+        RecursoDTO recursoDTO = listaRecursos.stream()
+                .filter(recursoDto -> recursoDto.getTitulo().equalsIgnoreCase(titulo))
+                .findFirst().get();
+        if (recursoDTO.isPrestado() == true){
             recursoDTO.getFechaPrestamo();
-            mensaje = ("Recurso no disponible");
+            return mensaje = ("Recurso no disponible");
         }
         return mensaje = ("Recurso disponible");
     }
-    public RecursoDTO prestarUnRecurso(String id) {
-        RecursoDTO recursoDTO = obtenerPorId(id);
+    public RecursoDTO prestarUnRecurso(String titulo) {
+        List<RecursoDTO> listaRecursos = obtenerTodos();
+        RecursoDTO recursoDTO = listaRecursos.stream()
+                .filter(recursoDto -> recursoDto.getTitulo().equalsIgnoreCase(titulo))
+                .findFirst().get();
         if (recursoDTO.isPrestado() == true){
             recursoDTO.getFechaPrestamo();
             new RuntimeException("Recurso no disponible");
@@ -61,18 +68,17 @@ public class ServicioRecurso {
     }
     public List<RecursoDTO> recursosRecomendados(String clasificacion, String area) {
         List<RecursoDTO> listaRecursos = obtenerTodos();
-        if (!clasificacion.isEmpty()) {
+        if (!clasificacion.equalsIgnoreCase("none") && area.equalsIgnoreCase("none")) {
             return listaRecursos.stream()
-                    .filter(recursoDTO -> recursoDTO.getClasificación().equalsIgnoreCase(clasificacion))
+                    .filter(recursoDTO -> recursoDTO.getClasificacion().equalsIgnoreCase(clasificacion))
                     .collect(Collectors.toList());
-        }
-        if (!area.isEmpty()) {
+        }if (clasificacion.equalsIgnoreCase("none") && !area.equalsIgnoreCase("none")) {
             return listaRecursos.stream()
                     .filter(recursoDTO -> recursoDTO.getArea().equalsIgnoreCase(area))
                     .collect(Collectors.toList());
-        }if (!clasificacion.isEmpty() && !area.isEmpty()) {
+        }if (!clasificacion.equalsIgnoreCase("none") && !area.equalsIgnoreCase("none")) {
             return listaRecursos.stream()
-                    .filter(recursoDTO -> recursoDTO.getClasificación().equalsIgnoreCase(clasificacion))
+                    .filter(recursoDTO -> recursoDTO.getClasificacion().equalsIgnoreCase(clasificacion))
                     .filter(recursoDTO -> recursoDTO.getArea().equalsIgnoreCase(area))
                     .collect(Collectors.toList());
         }

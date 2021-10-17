@@ -43,16 +43,16 @@ public class ControladorRecurso {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     }
-    @GetMapping("/{id}")
-    public ResponseEntity disponibilidadRecurso(@PathVariable String id) {
-        return new ResponseEntity<>(servicioRecurso.disponibilidadRecurso(id),HttpStatus.OK);
+    @GetMapping("/recursoDisponible/{titulo}")
+    public ResponseEntity disponibilidadRecurso(@PathVariable String titulo) {
+        return new ResponseEntity<>(servicioRecurso.disponibilidadRecurso(titulo),HttpStatus.OK);
     }
-    @PutMapping("/prestarUnRecurso/{id}")
-    public ResponseEntity prestarUnRecurso(@PathVariable String id) {
-        return new ResponseEntity(servicioRecurso.prestarUnRecurso(id),HttpStatus.OK);
+    @PutMapping("/prestarUnRecurso/{titulo}")
+    public ResponseEntity prestarUnRecurso(@PathVariable String titulo) {
+        return new ResponseEntity(servicioRecurso.prestarUnRecurso(titulo),HttpStatus.OK);
     }
     @GetMapping("/recursosRecomendados/{clasificacion}/{area}")
-    public ResponseEntity recursosRecomendados(String clasificacion, String area) {
+    public ResponseEntity recursosRecomendados(@PathVariable String clasificacion, @PathVariable String area) {
         return new ResponseEntity(servicioRecurso.recursosRecomendados(clasificacion,area),HttpStatus.OK);
     }
     @GetMapping("/devolverRecurso/{id}")

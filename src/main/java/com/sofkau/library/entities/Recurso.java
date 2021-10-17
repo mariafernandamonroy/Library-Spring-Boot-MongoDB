@@ -10,7 +10,8 @@ import java.util.Date;
 public class Recurso {
     @Id
     private String id;
-    private String clasificación;
+    private String titulo;
+    private String clasificacion;
     private String area;
     private boolean prestado = false;
     private LocalDate fechaPrestamo = null;
@@ -23,12 +24,20 @@ public class Recurso {
         this.id = id;
     }
 
-    public String getClasificación() {
-        return clasificación;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void setClasificación(String clasificación) {
-        this.clasificación = clasificación;
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getClasificacion() {
+        return clasificacion;
+    }
+
+    public void setClasificacion(String clasificacion) {
+        this.clasificacion = clasificacion;
     }
 
     public String getArea() {

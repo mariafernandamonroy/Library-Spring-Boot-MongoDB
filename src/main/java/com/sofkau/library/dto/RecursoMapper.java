@@ -11,7 +11,8 @@ public class RecursoMapper {
     public Recurso fromDTO(RecursoDTO dto) {
         Recurso recurso = new Recurso();
         recurso.setId(dto.getId());
-        recurso.setClasificación(dto.getClasificación());
+        recurso.setTitulo(dto.getTitulo());
+        recurso.setClasificacion(dto.getClasificacion());
         recurso.setArea(dto.getArea());
         recurso.setPrestado(dto.isPrestado());
         recurso.setFechaPrestamo(dto.getFechaPrestamo());
@@ -21,7 +22,8 @@ public class RecursoMapper {
     public RecursoDTO fromCollection(Recurso collection) {
         RecursoDTO recursoDTO = new RecursoDTO();
         recursoDTO.setId(collection.getId());
-        recursoDTO.setClasificación(collection.getClasificación());
+        recursoDTO.setTitulo(collection.getTitulo());
+        recursoDTO.setClasificacion(collection.getClasificacion());
         recursoDTO.setArea(collection.getArea());
         recursoDTO.setPrestado(collection.isPrestado());
         recursoDTO.setFechaPrestamo(collection.getFechaPrestamo());
