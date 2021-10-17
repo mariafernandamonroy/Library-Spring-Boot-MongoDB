@@ -1,11 +1,15 @@
 package com.sofkau.library.service;
 
 import com.sofkau.library.dto.RecursoDTO;
+import com.sofkau.library.dto.RecursoMapper;
+import com.sofkau.library.entities.Recurso;
 import com.sofkau.library.repository.RepositorioRecurso;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 
@@ -13,10 +17,12 @@ import java.util.ArrayList;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+@SpringBootTest
 class ServicioRecursoTest {
 
     @MockBean
@@ -26,68 +32,121 @@ class ServicioRecursoTest {
     private ServicioRecurso servicioRecurso;
 
     @Test
-    @DisplayName("GET /recursos success")
-    public void obtenerTodos() throws Exception {
-        var listRecursos = new ArrayList<RecursoDTO>();
-        listRecursos.add(new RecursoDTO("1","hola","revista","entretenimiento",false));
-        listRecursos.add(new RecursoDTO("2","tesla","libro","biografia",false));
-        listRecursos.add(new RecursoDTO("3","desayunos","libro","gastronomia",false));
+    @DisplayName("Test findAll Success")
+    public void obtenerTodos() {
 
-        Mockito.when(servicioRecurso.obtenerTodos()).thenReturn(listRecursos);
+        var dato1 = new Recurso();
+        dato1.setId("1");
+        dato1.setTitulo("hola");
+        dato1.setClasificacion("revista");
+        dato1.setArea("entretenimiento");
+        dato1.setPrestado(false);
+        dato1.setFechaPrestamo(null);
 
-        String url = "/library";
+        var dato2 = new Recurso();
+        dato2.setId("2");
+        dato2.setTitulo("tesla");
+        dato2.setClasificacion("libro");
+        dato2.setArea("biografia");
+        dato2.setPrestado(false);
+        dato2.setFechaPrestamo(null);
 
-//        mockMvc.perform(get(url))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(jsonPath("$",hasSize(3)))
-//                .andExpect(jsonPath("$[0].id").value("1"))
-//                .andExpect(jsonPath("$[0].titulo").value("hola"))
-//                .andExpect(jsonPath("$[0].clasificacion").value("revista"))
-//                .andExpect(jsonPath("$[0].area").value("entretenimiento"))
-//                .andExpect(jsonPath("$[0].prestado").value(false))
-//                .andExpect(jsonPath("$[1].id").value("2"))
-//                .andExpect(jsonPath("$[1].titulo").value("tesla"))
-//                .andExpect(jsonPath("$[1].clasificacion").value("libro"))
-//                .andExpect(jsonPath("$[1].area").value("biografia"))
-//                .andExpect(jsonPath("$[1].prestado").value(false))
-//                .andExpect(jsonPath("$[2].id").value("3"))
-//                .andExpect(jsonPath("$[2].titulo").value("desayunos"))
-//                .andExpect(jsonPath("$[2].clasificacion").value("libro"))
-//                .andExpect(jsonPath("$[2].area").value("gastronomia"))
-//                .andExpect(jsonPath("$[2].prestado").value(false));
-    }
+        var listaRecursos = new ArrayList<Recurso>();
+        listaRecursos.add(dato1);
+        listaRecursos.add(dato2);
 
+        Mockito.when(repositorioRecurso.findAll()).thenReturn(listaRecursos);
 
-    @Test
-    void obtenerPorId() {
+        var resultado = servicioRecurso.obtenerTodos();
+
+        Assertions.assertEquals(2, resultado.size());
+        Assertions.assertEquals(dato1.getTitulo(), resultado.get(0).getTitulo());
+        Assertions.assertEquals(dato1.getClasificacion(), resultado.get(0).getClasificacion());
+        Assertions.assertEquals(dato1.getArea(), resultado.get(0).getArea());
+        Assertions.assertEquals(dato1.isPrestado(), resultado.get(0).isPrestado());
+        Assertions.assertEquals(dato2.getTitulo(), resultado.get(1).getTitulo());
+        Assertions.assertEquals(dato2.getClasificacion(), resultado.get(1).getClasificacion());
+        Assertions.assertEquals(dato2.getArea(), resultado.get(1).getArea());
+        Assertions.assertEquals(dato2.isPrestado(), resultado.get(1).isPrestado());
     }
 
     @Test
     void agregarUnRecurso() {
+        var dato1 = new RecursoDTO();
+        dato1.setId("1");
+        dato1.setTitulo("hola");
+        dato1.setClasificacion("revista");
+        dato1.setArea("entretenimiento");
+        dato1.setPrestado(false);
+        dato1.setFechaPrestamo(null);
+
+        var dato2 = new Recurso();
+        dato2.setId("2");
+        dato2.setTitulo("tesla");
+        dato2.setClasificacion("libro");
+        dato2.setArea("biografia");
+        dato2.setPrestado(false);
+        dato2.setFechaPrestamo(null);
+
+        Mockito.when(repositorioRecurso.save(Mockito.any())).thenReturn(dato2);
+
+        var resultado = servicioRecurso.agregarUnRecurso(dato1);
+
+        Assertions.assertEquals(dato2.getTitulo(),resultado.getTitulo());
+        Assertions.assertEquals(dato2.getClasificacion(),resultado.getClasificacion());
+        Assertions.assertEquals(dato2.getArea(),resultado.getArea());
+        Assertions.assertEquals(dato2.isPrestado(),resultado.isPrestado());
     }
 
     @Test
-    void modificarUnRecurso() {
+    @DisplayName("Test para intenta devolver un recurso no prestado")
+    void devolverRecursoNoPrestado() {
+        var dato1 = new RecursoDTO();
+        dato1.setId("1");
+        dato1.setTitulo("hola");
+        dato1.setClasificacion("revista");
+        dato1.setArea("entretenimiento");
+        dato1.setPrestado(false);
+        dato1.setFechaPrestamo(null);
+
+        var dato2 = new Recurso();
+        dato2.setId("1");
+        dato2.setTitulo("tesla");
+        dato2.setClasificacion("libro");
+        dato2.setArea("biografia");
+        dato2.setPrestado(false);
+        dato2.setFechaPrestamo(null);
+
+        Mockito.when(repositorioRecurso.findById(Mockito.any())).thenReturn(java.util.Optional.of(dato2));
+
+        var resultado = servicioRecurso.devolverRecurso(dato1.getId());
+        String expectedMessage = "El recurso no se puede devolver porque no estaba prestado";
+        Assertions.assertEquals(expectedMessage,resultado);
     }
 
     @Test
-    void borrar() {
-    }
+    @DisplayName("Test para intenta devolver un recurso prestado")
+    void devolverRecursoPrestado() {
+        var dato1 = new RecursoDTO();
+        dato1.setId("1");
+        dato1.setTitulo("hola");
+        dato1.setClasificacion("revista");
+        dato1.setArea("entretenimiento");
+        dato1.setPrestado(true);
+        dato1.setFechaPrestamo(null);
 
-    @Test
-    void disponibilidadRecurso() {
-    }
+        var dato2 = new Recurso();
+        dato2.setId("1");
+        dato2.setTitulo("tesla");
+        dato2.setClasificacion("libro");
+        dato2.setArea("biografia");
+        dato2.setPrestado(true);
+        dato2.setFechaPrestamo(null);
 
-    @Test
-    void prestarUnRecurso() {
-    }
+        Mockito.when(repositorioRecurso.findById(Mockito.any())).thenReturn(java.util.Optional.of(dato2));
 
-    @Test
-    void recursosRecomendados() {
-    }
-
-    @Test
-    void devolverRecurso() {
+        var resultado = servicioRecurso.devolverRecurso(dato1.getId());
+        String expectedMessage = "Recurso devuelto";
+        Assertions.assertEquals(expectedMessage,resultado);
     }
 }
